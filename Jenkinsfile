@@ -3,6 +3,9 @@ pipeline {
     tools {
         maven 'maven_3_8_7'
     }
+    environment {
+        DOCKERHUB_CREDENTIALS = credentials('dockerhub')
+    }
     stages {
         stage('Build Maven') {
             steps {
@@ -24,6 +27,20 @@ pipeline {
                 sh 'docker build -t devopsjava .'
             }
         }
-
+        stage('Login to docker hub') {
+            steps {
+                sh 'docker login -u $DOCKERHUB_CREDENTIALS --password-stdin'
+            }
+        }
+        stage('Push') {
+            steps {
+                sh 'docker push edi123/devopsjava'
+            }
+        }
+    }
+    post {
+        always {
+            sh 'docker logout'
+        }
     }
 }
