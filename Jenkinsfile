@@ -24,7 +24,7 @@ pipeline {
         }
         stage('Create docker image') {
             steps {
-                sh 'docker build -t devopsjava .'
+                sh 'docker build -t edi123/devopsjava .'
             }
         }
         stage('Login to docker hub') {
